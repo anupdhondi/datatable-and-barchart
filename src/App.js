@@ -1,25 +1,76 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useCallback, useState } from 'react';
+import DataTable from './DataTable';
+import Chart from './Chart';
 
-function App() {
+const columns = [
+  {
+    name: 'ID',
+    selector: (row) => row.id,
+  },
+  {
+    name: 'Risk type',
+    selector: (row) => row.name,
+  },
+  {
+    name: 'Score',
+    selector: (row) => row.percentage,
+  },
+];
+
+const data = [
+  {
+    id: 1,
+    name: 'Service insight integration',
+    percentage: '50',
+    isSelected: true,
+  },
+  {
+    id: 2,
+    name: 'REI-GI/gi frontend (active)',
+    percentage: '90',
+    isSelected: true,
+  },
+  {
+    id: 3,
+    name: 'Service insight Jarvis',
+    percentage: '30',
+    isSelected: true,
+  },
+  {
+    id: 4,
+    name: 'CbrePaulRodemayer/webdev',
+    percentage: '70',
+    isSelected: true,
+  },
+  {
+    id: 5,
+    name: 'AGILEFAST/agile-market-analysis',
+    percentage: '60',
+    isSelected: true,
+  },
+];
+
+const App = () => {
+  const [selectedRows, setSelectedRows] = useState([]);
+
+  const handleRowSelect = useCallback((selectedItems) => {
+    setSelectedRows(selectedItems.selectedRows);
+  }, []);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <div>
+        <DataTable
+          columns={columns}
+          data={data}
+          handleRowSelect={handleRowSelect}
+        />
+      </div>
+      <div>
+        <Chart data={selectedRows} />
+      </div>
+    </>
   );
-}
+};
 
 export default App;
